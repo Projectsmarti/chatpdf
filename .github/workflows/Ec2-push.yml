@@ -22,9 +22,13 @@ jobs:
     needs: build
     runs-on: self-hosted    
     steps:
+      - name: remove all exiting containers
+        run: docker rm -f $(docker ps -aq)
+      - name: remove cache memory
+        run: docker system prune -a -f
       - name: Pull image from docker hub
         run: sudo docker pull smatificia/smatificia-chatpdf:latest 
       - name: Delete Old Container
-        run: sudo docker rm -f Chatpdf
+        run: sudo docker rm -f Chatpdf 2>/dev/null || true
       - name: Run docker container
         run: sudo docker run -d -p 8080:8080 --name Chatpdf smatificia/smatificia-chatpdf
