@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout Source
         uses: actions/checkout@v3
+      - name: Clean up Docker resources
+        run: |
+          docker system prune -af
+          docker volume prune -f
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker Image
@@ -23,9 +27,11 @@ jobs:
     runs-on: self-hosted    
     steps:
       - name: remove all exiting containers
-        run: docker rm -f $(docker ps -aq)
+        run: |
+          sudo docker stop $(docker ps -aq) ||
+          sudo docker rm -f $(docker ps -aq)
       - name: remove cache memory
-        run: docker system prune -a -f
+        run: sudo docker system prune -a -f
       - name: Pull image from docker hub
         run: sudo docker pull smatificia/smatificia-chatpdf:latest 
       - name: Delete Old Container
