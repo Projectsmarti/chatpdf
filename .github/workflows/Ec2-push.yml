@@ -3,7 +3,7 @@ name: CICD
 on:
   push:
     branches:
-      - main
+      - mfghb
 
 jobs:
   build:
@@ -23,8 +23,8 @@ jobs:
     runs-on: self-hosted    
     steps:
       - name: Pull image from docker hub
-        run: docker pull smatificia/smatificia-chatpdf:latest 
+        run: sudo docker pull smatificia/smatificia-chatpdf:latest 
       - name: Delete Old Container
-        run: docker rm -f Chatpdf
+        run: sudo docker rm -f Chatpdf
       - name: Run docker container
-        run: docker run -d -p 8080:8080 --name Chatpdf smatificia/smatificia-chatpdf
+        run: sudo docker run -d -p 8080:8080 --name Chatpdf smatificia/smatificia-chatpdf
