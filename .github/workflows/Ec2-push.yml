@@ -22,18 +22,18 @@ jobs:
       - name: Publish image to docker hub
         run: docker push smatificia/smatificia-chatpdf:latest   
 
-  deploy: 
+  deploy:
     needs: build
     runs-on: self-hosted    
     steps:
-      - name: remove all exiting containers
+      - name: remove all existing containers
         run: |
-          sudo docker stop $(docker ps -aq) ||
-          sudo docker rm -f $(docker ps -aq)
+          sudo docker stop $(sudo docker ps -aq) || true
+          sudo docker rm -f $(sudo docker ps -aq) || true
       - name: remove cache memory
         run: sudo docker system prune -a -f
       - name: Pull image from docker hub
-        run: sudo docker pull smatificia/smatificia-chatpdf:latest 
+        run: sudo docker pull smatificia/smatificia-chatpdf:latest
       - name: Delete Old Container
         run: sudo docker rm -f Chatpdf 2>/dev/null || true
       - name: Run docker container
